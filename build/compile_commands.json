@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/kvasir/rock/control/generic_rover_manoeuvre/build/src",
+  "command": "/usr/bin/cc  -DBASE_LOG_NAMESPACE=generic_rover_manoeuvre -Dgeneric_rover_manoeuvre_EXPORTS -I/home/kvasir/rock/control/generic_rover_manoeuvre/build/include/_generic_rover_manoeuvre_  -g -fPIC   -Wall -Wno-unused-local-typedefs -Wnon-virtual-dtor -o CMakeFiles/generic_rover_manoeuvre.dir/GenericRoverManoeuvre.c.o   -c /home/kvasir/rock/control/generic_rover_manoeuvre/src/GenericRoverManoeuvre.c",
+  "file": "/home/kvasir/rock/control/generic_rover_manoeuvre/src/GenericRoverManoeuvre.c"
+}
+]

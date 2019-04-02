@@ -1,0 +1,12 @@
+prefix=/home/kvasir/rock/install
+exec_prefix=/home/kvasir/rock/install
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: generic_rover_manoeuvre
+Description: 
+Version: 0.1
+Requires: 
+Libs: -L${libdir} -lgeneric_rover_manoeuvre
+Cflags: -I${includedir}
+

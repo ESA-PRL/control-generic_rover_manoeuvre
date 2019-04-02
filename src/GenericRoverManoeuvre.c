@@ -150,6 +150,98 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 }
 
 
+
+/* ------------------------ */
+/* -- Generic Crab -------- */
+/* ------------------------ */
+
+EXPORT int GenericCrab( ROVER_PARAM *MyRover,
+	double RoverLinearVelocity,						
+	double HeadingAngle,							
+	double RoverAngularVelocity,					
+	// double *RoverPointToControl,					
+	double *WheelSteering,							
+	double *WheelVelocity )
+{
+
+	/* ---  declare variables  --- */
+	int i=0;		// 'for' loops variable
+
+#ifdef DEBUG
+	printf( "\nin GenericRoverManoeuvre.c->GenericCrab()\n" );
+#endif
+
+	// check the input Rover pointer is valid
+	if( MyRover == NULL )
+	{
+		printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : MyRover is NULL\n\n" );
+		return -1;
+	}
+	// check the ouput pointers
+	else if( WheelSteering == NULL )
+	{
+		printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : WheelSteering is NULL\n\n" );
+		return -1;
+	}
+	else if( WheelVelocity == NULL )
+	{
+		printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : WheelVelocity is NULL\n\n" );
+		return -1;
+	}
+
+	double theta = HeadingAngle;
+	double x_dot = math.cos(theta) * RoverLinearVelocity;
+	double y_dot = math.sin(theta) * RoverLinearVelocity;
+	double theta_dot = RoverLinearVelocity;
+
+	// set the wheel steering
+	for( i=0 ; i<MyRover->WheelNumber ; i++ )
+	{
+		// check the steering wheels
+		if( MyRover->IsSteeringWheel[i] == TRUE )
+
+			double alpha = MyRover->WheelCoordPol[i][ALPHA];
+			double l = MyRover->WheelCoordPol[i][D];
+
+			// Compute correct stearing angle from the no sliding constraint.
+			double beta = math.atan2(- (math.sin(alpha) * y_dot + math.cos(alpha) * x_dot) / (l * theta_dot + math.cos(alpha) * y_dot - math.sin(alpha) * x_dot));
+
+			WheelSteering[i] = beta - alpha;
+		else
+		{
+			WheelSteering[i] = 0;
+			printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : GenericCrab only works if all wheels can be steered. \n\n" );
+			return -1;
+		}
+	}
+
+
+
+	// set the wheel speed
+	for( i=0 ; i<MyRover->WheelNumber ; i++ )
+	{
+		// check the driving wheels
+		if( MyRover->IsDrivingWheel[i] == TRUE )
+			double alpha = MyRover->WheelCoordPol[i][ALPHA];
+			double l = MyRover->WheelCoordPol[i][D];
+
+			// TODO: Compute the wheel speeds from the current wheel orientations and not the set wheel orientations.
+			double beta = WheelSteering[i];
+			double r = MyRover->WheelRadius[i]
+
+			double phi_dot = (math.sin(alpha + beta) * x_dot - math.cos(alpha + beta) * y_dot - l * math.cos(beta))/r;
+
+			WheelVelocity[i] = phi_dot;
+		else
+		{
+			WheelVelocity[i] = 0.;
+		}
+	}
+
+
+}
+
+
 /* ------------------------ */
 /* -- Crab               -- */
 /* ------------------------ */

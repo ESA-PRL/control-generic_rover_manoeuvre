@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kvasir/rock/control/generic_rover_manoeuvre/src/GenericRoverManoeuvre.c
+constants.h
+/home/kvasir/rock/control/generic_rover_manoeuvre/src/constants.h
+GenericRoverManoeuvre.h
+/home/kvasir/rock/control/generic_rover_manoeuvre/src/GenericRoverManoeuvre.h
+stdio.h
+-
+math.h
+-
+
+/home/kvasir/rock/control/generic_rover_manoeuvre/src/GenericRoverManoeuvre.h
+
+/home/kvasir/rock/control/generic_rover_manoeuvre/src/constants.h
+
