@@ -172,7 +172,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure contai
 													*/
 	double HeadingAngle,							//!< The heading angle of the motion, with respect to rover frame, in [rad]
 	double RoverAngularVelocity,					//!< Rover angular velocity for the manoeuvre, in [rad/s]	
-	// base::samples::Joints joints_readings,
+	double *steeringPositionReadings,				//!< Position readings of steering joints in [rad]
 	// double *RoverPointToControl,					//!< Coordinates of the point to control of the rover, in the rover frame.
 	double *WheelSteering,							//!< Angle of the steering wheels, in [rad].
 	double *WheelVelocity							//!< Rotation velocity of the wheels, in [rad/s].

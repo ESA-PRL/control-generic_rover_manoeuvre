@@ -159,7 +159,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	double RoverLinearVelocity,						
 	double HeadingAngle,							
 	double RoverAngularVelocity,	
-	// base::samples::Joints joint_readings,				
+	double *steeringPositionReadings,
 	// double *RoverPointToControl,					
 	double *WheelSteering,							
 	double *WheelVelocity )
@@ -190,6 +190,8 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 		return -1;
 	}
 
+	// for (int i=0;i<6;i++) printf("Position Steering Reading: %f\n", steeringPositionReadings[i]);
+
 	double theta = HeadingAngle;
 
 	double x_dot = cos(theta) * RoverLinearVelocity;
@@ -214,7 +216,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 
 		int adjustment_count = 0;
 
-		double beta_current = 1.5708; 	// Current steering Angle
+		double beta_current = steeringPositionReadings[i]; 	// Current steering Angle
 		// check the steering wheels
 		if( MyRover->IsSteeringWheel[i] == TRUE && MyRover->IsDrivingWheel[i] == TRUE)
 		{
@@ -277,7 +279,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 			// printf("beta_steer closest: %f\n",beta_steer*180/M_PI);
 			// printf("%i\n", adjustment_count);
 
-			// printf("beta_steer        : %f\n",beta_steer*180/M_PI);
+			printf("beta_steer        : %f\n",beta_steer*180/M_PI);
 
 			WheelSteering[i] = beta_steer;
 			// TODO: Compute the wheel speeds from the current wheel orientations and not the set wheel orientations.
