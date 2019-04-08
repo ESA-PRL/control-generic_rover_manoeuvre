@@ -687,3 +687,93 @@ make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/bu
 
 Source file was:
 int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_Wall succeeded with the following output:
+Change Dir: /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_19a67/fast"
+/usr/bin/make -f CMakeFiles/cmTC_19a67.dir/build.make CMakeFiles/cmTC_19a67.dir/build
+make[1]: Entering directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_19a67.dir/src.cxx.o
+/usr/bin/c++     -DCXX_SUPPORTS_Wall   -Wall -o CMakeFiles/cmTC_19a67.dir/src.cxx.o -c /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_19a67
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19a67.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXX_SUPPORTS_Wall    CMakeFiles/cmTC_19a67.dir/src.cxx.o  -o cmTC_19a67 -rdynamic 
+make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_Wno_unused_local_typedefs succeeded with the following output:
+Change Dir: /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_8a741/fast"
+/usr/bin/make -f CMakeFiles/cmTC_8a741.dir/build.make CMakeFiles/cmTC_8a741.dir/build
+make[1]: Entering directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_8a741.dir/src.cxx.o
+/usr/bin/c++     -DCXX_SUPPORTS_Wno_unused_local_typedefs   -Wno-unused-local-typedefs -o CMakeFiles/cmTC_8a741.dir/src.cxx.o -c /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_8a741
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a741.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXX_SUPPORTS_Wno_unused_local_typedefs    CMakeFiles/cmTC_8a741.dir/src.cxx.o  -o cmTC_8a741 -rdynamic 
+make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_Wnon_virtual_dtor succeeded with the following output:
+Change Dir: /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_f114c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f114c.dir/build.make CMakeFiles/cmTC_f114c.dir/build
+make[1]: Entering directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_f114c.dir/src.cxx.o
+/usr/bin/c++     -DCXX_SUPPORTS_Wnon_virtual_dtor   -Wnon-virtual-dtor -o CMakeFiles/cmTC_f114c.dir/src.cxx.o -c /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_f114c
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f114c.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXX_SUPPORTS_Wnon_virtual_dtor    CMakeFiles/cmTC_f114c.dir/src.cxx.o  -o cmTC_f114c -rdynamic 
+make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_Wall succeeded with the following output:
+Change Dir: /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_1d8a2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1d8a2.dir/build.make CMakeFiles/cmTC_1d8a2.dir/build
+make[1]: Entering directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_1d8a2.dir/src.cxx.o
+/usr/bin/c++     -DCXX_SUPPORTS_Wall   -Wall -o CMakeFiles/cmTC_1d8a2.dir/src.cxx.o -c /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_1d8a2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d8a2.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXX_SUPPORTS_Wall    CMakeFiles/cmTC_1d8a2.dir/src.cxx.o  -o cmTC_1d8a2 -rdynamic 
+make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_Wno_unused_local_typedefs succeeded with the following output:
+Change Dir: /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ef6e7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ef6e7.dir/build.make CMakeFiles/cmTC_ef6e7.dir/build
+make[1]: Entering directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_ef6e7.dir/src.cxx.o
+/usr/bin/c++     -DCXX_SUPPORTS_Wno_unused_local_typedefs   -Wno-unused-local-typedefs -o CMakeFiles/cmTC_ef6e7.dir/src.cxx.o -c /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_ef6e7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ef6e7.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXX_SUPPORTS_Wno_unused_local_typedefs    CMakeFiles/cmTC_ef6e7.dir/src.cxx.o  -o cmTC_ef6e7 -rdynamic 
+make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test CXX_SUPPORTS_Wnon_virtual_dtor succeeded with the following output:
+Change Dir: /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e26e7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e26e7.dir/build.make CMakeFiles/cmTC_e26e7.dir/build
+make[1]: Entering directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e26e7.dir/src.cxx.o
+/usr/bin/c++     -DCXX_SUPPORTS_Wnon_virtual_dtor   -Wnon-virtual-dtor -o CMakeFiles/cmTC_e26e7.dir/src.cxx.o -c /home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_e26e7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e26e7.dir/link.txt --verbose=1
+/usr/bin/c++    -DCXX_SUPPORTS_Wnon_virtual_dtor    CMakeFiles/cmTC_e26e7.dir/src.cxx.o  -o cmTC_e26e7 -rdynamic 
+make[1]: Leaving directory '/home/kvasir/rock/control/generic_rover_manoeuvre/build/CMakeFiles/CMakeTmp'
+
+Source file was:
+int main() { return 0; }

@@ -17,6 +17,8 @@ math.h
 -
 
 /home/kvasir/rock/control/generic_rover_manoeuvre/src/GenericRoverManoeuvre.h
+stdbool.h
+-
 
 /home/kvasir/rock/control/generic_rover_manoeuvre/src/constants.h
 

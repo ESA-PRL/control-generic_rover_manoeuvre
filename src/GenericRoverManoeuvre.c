@@ -158,7 +158,8 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	double RoverLinearVelocity,						
 	double HeadingAngle,							
-	double RoverAngularVelocity,					
+	double RoverAngularVelocity,	
+	// base::samples::Joints joint_readings,				
 	// double *RoverPointToControl,					
 	double *WheelSteering,							
 	double *WheelVelocity )
@@ -167,9 +168,9 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	/* ---  declare variables  --- */
 	int i=0;		// 'for' loops variable
 
-#ifdef DEBUG
-	printf( "\nin GenericRoverManoeuvre.c->GenericCrab()\n" );
-#endif
+	#ifdef DEBUG
+		printf( "\nin GenericRoverManoeuvre.c->GenericCrab()\n" );
+	#endif
 
 	// check the input Rover pointer is valid
 	if( MyRover == NULL )
@@ -190,55 +191,116 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	}
 
 	double theta = HeadingAngle;
-	double x_dot = math.cos(theta) * RoverLinearVelocity;
-	double y_dot = math.sin(theta) * RoverLinearVelocity;
-	double theta_dot = RoverLinearVelocity;
+	double x_dot = cos(theta) * RoverLinearVelocity;
+	double y_dot = sin(theta) * RoverLinearVelocity;
+	double theta_dot = RoverAngularVelocity;
+
+	double lower_position_limit = -1.74;		// -100 deg
+	double upper_position_limit = 1.74;			// +100 deg
 
 	// set the wheel steering
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
+
+		double alpha;			// Angle of wheel steering center to origin
+		double l;				// Radial Distance from Wheel Steering center to Origin
+		double beta_offset;		// Static offset to calculate steering angle from computed angle
+		double beta;			// Computed angle derived from 2D kinematic model
+		double beta_steer;		// Steering Angle to send to platform driver
+		double r;				// Wheel Radius
+		double phi_dot;			// Wheel velocity
+		bool flip_velocity = false;
+
+		int adjustment_count = 0;
+
+		double beta_current = 1.5708; 	// Current steering Angle
 		// check the steering wheels
-		if( MyRover->IsSteeringWheel[i] == TRUE )
+		if( MyRover->IsSteeringWheel[i] == TRUE && MyRover->IsDrivingWheel[i] == TRUE)
+		{
+			alpha = MyRover->WheelCoordPol[i][ALPHA];
+			l = MyRover->WheelCoordPol[i][D];
+			r = MyRover->WheelRadius[i];
+			beta_offset = M_PI/2 - alpha; 
 
-			double alpha = MyRover->WheelCoordPol[i][ALPHA];
-			double l = MyRover->WheelCoordPol[i][D];
+			// Compute steering angle from no sliding constraint.
+			beta = atan2(- (sin(alpha) * y_dot + cos(alpha) * x_dot), (l * theta_dot + cos(alpha) * y_dot - sin(alpha) * x_dot));
+			// Shift steering angle to correct orientation depending on the wheel.
+			beta_steer = beta - beta_offset;
+			// printf("beta_steer        : %f\n",beta_steer*180/M_PI);
 
-			// Compute correct stearing angle from the no sliding constraint.
-			double beta = math.atan2(- (math.sin(alpha) * y_dot + math.cos(alpha) * x_dot) / (l * theta_dot + math.cos(alpha) * y_dot - math.sin(alpha) * x_dot));
+			// Limit steering angle to +-360
+			beta_steer = fmod(beta_steer, 2*M_PI);
+			// printf("beta_steer 360    : %f\n",beta_steer*180/M_PI);
 
-			WheelSteering[i] = beta - alpha;
+			// Limit steering angle to +-180
+			if (ABS(beta_steer) >= M_PI) {
+				beta_steer = beta_steer - SGN(beta_steer)*M_PI;
+				flip_velocity = !flip_velocity;
+				adjustment_count++;
+			}
+			// printf("beta_steer 180    : %f\n",beta_steer*180/M_PI);
+
+			// Check if Steering angle is within limits and adjust it accordingly
+			if (beta_steer <= lower_position_limit)
+			{
+				beta_steer = beta_steer + M_PI;
+				flip_velocity = !flip_velocity;
+				adjustment_count++;
+			}
+
+			if (beta_steer >= upper_position_limit)
+			{
+				beta_steer = beta_steer - M_PI;
+				flip_velocity = !flip_velocity;
+				adjustment_count++;
+			}
+			// printf("beta_steer lim    : %f\n",beta_steer*180/M_PI);
+
+			// Check if there are multiple ways to arrange wheels
+			if ( (beta_steer < upper_position_limit && beta_steer > lower_position_limit + M_PI) ||
+				 (beta_steer > lower_position_limit && beta_steer < upper_position_limit - M_PI))
+			{
+				// Set steering angle so it's the closest to the current steering angle
+				double beta_1 = beta_steer;								// Option one is the computed steering angle
+				double beta_2 = beta_steer - SGN(beta_steer)*M_PI;		// Option two is the computed steering angle flipped 180 deg over the 0 degree point so it stays within the position limit 
+
+				double beta_1_diff = ABS(beta_1 - beta_current);
+				double beta_2_diff = ABS(beta_2 - beta_current);
+
+				if (beta_2_diff < beta_1_diff) {
+					beta_steer = beta_2;
+					adjustment_count++;
+					flip_velocity = !flip_velocity;
+				}
+			}
+			// printf("beta_steer closest: %f\n",beta_steer*180/M_PI);
+			// printf("%i\n", adjustment_count);
+
+			// printf("beta_steer        : %f\n",beta_steer*180/M_PI);
+
+			WheelSteering[i] = beta_steer;
+			// TODO: Compute the wheel speeds from the current wheel orientations and not the set wheel orientations.
+
+			phi_dot = (sin(alpha + beta) * x_dot - cos(alpha + beta) * y_dot - l * cos(beta) * theta_dot)/r;
+
+			if (flip_velocity) phi_dot = -phi_dot;
+
+			WheelVelocity[i] = phi_dot;
+			printf("phi_dot: %f\n",phi_dot);
+		}
 		else
 		{
 			WheelSteering[i] = 0;
-			printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : GenericCrab only works if all wheels can be steered. \n\n" );
+			WheelVelocity[i] = 0;
+			printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : GenericCrab only works if all wheels are steered and driven. \n\n" );
 			return -1;
 		}
+
 	}
+	printf("---------------\n");
 
 
-
-	// set the wheel speed
-	for( i=0 ; i<MyRover->WheelNumber ; i++ )
-	{
-		// check the driving wheels
-		if( MyRover->IsDrivingWheel[i] == TRUE )
-			double alpha = MyRover->WheelCoordPol[i][ALPHA];
-			double l = MyRover->WheelCoordPol[i][D];
-
-			// TODO: Compute the wheel speeds from the current wheel orientations and not the set wheel orientations.
-			double beta = WheelSteering[i];
-			double r = MyRover->WheelRadius[i]
-
-			double phi_dot = (math.sin(alpha + beta) * x_dot - math.cos(alpha + beta) * y_dot - l * math.cos(beta))/r;
-
-			WheelVelocity[i] = phi_dot;
-		else
-		{
-			WheelVelocity[i] = 0.;
-		}
-	}
-
-
+	return 0;
 }
 
 
@@ -1402,7 +1464,7 @@ EXPORT int LowCog( ROVER_PARAM *MyRover,
 	{
 		// check the driving wheel
 		//printf( "drive : %d\n", MyRover->IsDrivingWheel[i] );
-		if( (MyRover->IsDrivingWheel[i] == TRUE) && ( MyRover->IsWalkingWheel[i]==TRUE) )
+		if( (MyRover->IsDrivingWheel[i] == TRUE) && (MyRover->IsWalkingWheel[i] == TRUE) )
 		{
 			// compute joint velocity
 			double WheelVel = 0.;
