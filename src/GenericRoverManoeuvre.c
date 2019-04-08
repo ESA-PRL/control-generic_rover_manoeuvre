@@ -191,6 +191,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	}
 
 	double theta = HeadingAngle;
+
 	double x_dot = cos(theta) * RoverLinearVelocity;
 	double y_dot = sin(theta) * RoverLinearVelocity;
 	double theta_dot = RoverAngularVelocity;
@@ -286,7 +287,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 			if (flip_velocity) phi_dot = -phi_dot;
 
 			WheelVelocity[i] = phi_dot;
-			printf("phi_dot: %f\n",phi_dot);
+			// printf("phi_dot: %f\n",phi_dot);
 		}
 		else
 		{
@@ -297,7 +298,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 		}
 
 	}
-	printf("---------------\n");
+	// printf("---------------\n");
 
 
 	return 0;
