@@ -1,1 +1,0 @@
-/usr/bin/cc  -fPIC -g  -shared -Wl,-soname,libgeneric_rover_manoeuvre.so -o libgeneric_rover_manoeuvre.so CMakeFiles/generic_rover_manoeuvre.dir/GenericRoverManoeuvre.c.o 

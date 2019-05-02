@@ -1,4 +1,0 @@
-/home/kvasir/rock/install/lib/pkgconfig/generic_rover_manoeuvre.pc
-/home/kvasir/rock/install/lib/libgeneric_rover_manoeuvre.so
-/home/kvasir/rock/install/include/generic_rover_manoeuvre/constants.h
-/home/kvasir/rock/install/include/generic_rover_manoeuvre/GenericRoverManoeuvre.h
