@@ -7,7 +7,7 @@
 
 
 #ifndef NUM_WHEEL_ROVER_MAX
-	#define NUM_WHEEL_ROVER_MAX 6	//!< Constant of the maximal number of wheels that a rover can have 
+	#define NUM_WHEEL_ROVER_MAX 6	//!< Constant of the maximal number of wheels that a rover can have
 									//!< (for coding purpose, i.e. initialization of the size of the tables)
 #endif
 
@@ -30,7 +30,7 @@
 /* ---  Constants ---  */
 #ifndef M_PI
 	#define M_PI 3.14159265358979323846		//!< Mathematical pi constant.
-#endif 
+#endif
 #ifndef RAD2DEG
 	#define RAD2DEG	180./M_PI				//!< Mathematical conversion factor from radians to degrees.
 #endif
@@ -47,7 +47,7 @@
 #endif
 
 #ifndef FALSE
-	#define FALSE 0							//!< Define logical false value (0).	
+	#define FALSE 0							//!< Define logical false value (0).
 #endif
 
 // constants for the gait for the wheel walking
