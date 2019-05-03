@@ -30,7 +30,7 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 	double RoverAngularVelocity = 0.;
 	// distance between RotationCenter and PoinToControl
 	double DistRC_PTC = 0.;
-	//static int PreviousState;		// variable to 'remember' if the 
+	//static int PreviousState;		// variable to 'remember' if the
 
 #ifdef DEBUG
 	printf( "\nin GenericRoverManoeuvre.c->GenericAckermann()\n" );
@@ -93,7 +93,7 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 		{
 			//printf( "%d NoSpeed\n", i );
 			WheelSteering[i] = 0.;
-		} 
+		}
 	}
 
 
@@ -143,7 +143,7 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 #ifdef DEBUG
 			printf( "\t%3.2f\t|\t%3.2f\n", 0., 0. );
 #endif
-		} 
+		}
 	}
 
 	return 0;
@@ -156,12 +156,12 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 /* ------------------------ */
 
 EXPORT int GenericCrab( ROVER_PARAM *MyRover,
-	double RoverLinearVelocity,						
-	double HeadingAngle,							
-	double RoverAngularVelocity,	
+	double RoverLinearVelocity,
+	double HeadingAngle,
+	double RoverAngularVelocity,
 	double *steeringPositionReadings,
-	// double *RoverPointToControl,					
-	double *WheelSteering,							
+	// double *RoverPointToControl,
+	double *WheelSteering,
 	double *WheelVelocity )
 {
 
@@ -223,7 +223,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 			alpha = MyRover->WheelCoordPol[i][ALPHA];
 			l = MyRover->WheelCoordPol[i][D];
 			r = MyRover->WheelRadius[i];
-			beta_offset = M_PI/2 - alpha; 
+			beta_offset = M_PI/2 - alpha;
 
 			// Compute steering angle from no sliding constraint.
 			beta = atan2(- (sin(alpha) * y_dot + cos(alpha) * x_dot), (l * theta_dot + cos(alpha) * y_dot - sin(alpha) * x_dot));
@@ -264,8 +264,8 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 				 (beta_steer > lower_position_limit && beta_steer < upper_position_limit - M_PI))
 			{
 				// Set steering angle so it's the closest to the current steering angle
-				double beta_1 = beta_steer;								// Option one is the computed steering angle
-				double beta_2 = beta_steer - SGN(beta_steer)*M_PI;		// Option two is the computed steering angle flipped 180 deg over the 0 degree point so it stays within the position limit 
+				double beta_1 = beta_steer;														// Option one is the computed steering angle
+				double beta_2 = beta_steer - SGN(beta_steer)*M_PI;		// Option two is the computed steering angle flipped 180 deg over the 0 degree point so it stays within the position limit
 
 				double beta_1_diff = ABS(beta_1 - beta_current);
 				double beta_2_diff = ABS(beta_2 - beta_current);
@@ -279,7 +279,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 			// printf("beta_steer closest: %f\n",beta_steer*180/M_PI);
 			// printf("%i\n", adjustment_count);
 
-			printf("beta_steer        : %f\n",beta_steer*180/M_PI);
+			// printf("beta_steer        : %f\n",beta_steer*180/M_PI);
 
 			WheelSteering[i] = beta_steer;
 			// TODO: Compute the wheel speeds from the current wheel orientations and not the set wheel orientations.
@@ -423,7 +423,7 @@ EXPORT int SpotTurn( ROVER_PARAM *MyRover,
 		{
 			//printf( "%d NoSpeed\n", i );
 			WheelSteering[i] = 0;
-		} 
+		}
 	}
 
 	/* ---  set wheel velocity  --- */
@@ -433,12 +433,12 @@ EXPORT int SpotTurn( ROVER_PARAM *MyRover,
 		//printf( "drive : %d\n", MyRover->IsDrivingWheel[i] );
 		if( MyRover->IsDrivingWheel[i] == TRUE )
 			//WheelVelocity[i] = DirFactor*RoverAngularVelocity*MyRover->WheelCoordPol[i][D]/MyRover->WheelRadius[i];
-			WheelVelocity[i] = RoverAngularVelocity*MyRover->WheelCoordPol[i][D]/MyRover->WheelRadius[i];	
+			WheelVelocity[i] = RoverAngularVelocity*MyRover->WheelCoordPol[i][D]/MyRover->WheelRadius[i];
 		else
 		{
 			//printf( "%d NoSpeed\n", i );
 			WheelVelocity[i] = 0.;
-		} 
+		}
 		// update the velocity direction factor
 		DirFactor *= -1;
 	}
@@ -469,14 +469,14 @@ double Dist2( double x1, double y1,
 /* -- ConvCoordCart2Pol  -- */
 /* ------------------------ */
 
-EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],	
+EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],
 	double CoordPol[][2],
 	int NumCoord
 	)
 {
 	int k=0;
 	int i=0;
-	
+
 #ifdef DEBUG
 	printf( "in GenericRoverManoeuvre.c->ConvCoordPol2Cart():\n" );
 #endif
@@ -502,7 +502,7 @@ EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],
 		// Theta polar coordinate
 		CoordPol[i][1] = atan2( CoordCart[i][1], CoordCart[i][0] );
 	}
-	
+
 }
 
 
@@ -510,14 +510,14 @@ EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],
 /* -- ConvCoordPol2Cart  -- */
 /* ------------------------ */
 
-EXPORT void ConvCoordPol2Cart( const double CoordPol[][2],	
+EXPORT void ConvCoordPol2Cart( const double CoordPol[][2],
 	double CoordCart[][2],
 	int NumCoord
 	)
 {
 	int k=0;
 	int i=0;
-	
+
 #ifdef DEBUG
 	printf( "in GenericRoverManoeuvre.c->ConvCoordPol2Cart():\n" );
 #endif
@@ -550,8 +550,8 @@ EXPORT void ConvCoordPol2Cart( const double CoordPol[][2],
 /* -- RoverInit          -- */
 /* ------------------------ */
 
-EXPORT int RoverInit( ROVER_PARAM *MyRover, 
-	const double *MyRoverParameters, 
+EXPORT int RoverInit( ROVER_PARAM *MyRover,
+	const double *MyRoverParameters,
 	int NumParamIn )
 {
 	/* ---  declare variables  --- */
@@ -581,12 +581,12 @@ EXPORT int RoverInit( ROVER_PARAM *MyRover,
 	MyRover->WheelNumber = (int) MyRoverParameters[k++];
 
 	//	/* --- WalkingWheelNumber  --- */
-	//	MyRover->WalkingWheelNumber = (int) MyRoverParameters[k++];	
+	//	MyRover->WalkingWheelNumber = (int) MyRoverParameters[k++];
 	//
-	//	/* --- SteeringWheelNumber  --- */			
+	//	/* --- SteeringWheelNumber  --- */
 	//	MyRover->SteeringWheelNumber = (int) MyRoverParameters[k++];
 	//
-	//	/* --- DrivingWheelNumber  --- */				
+	//	/* --- DrivingWheelNumber  --- */
 	//	MyRover->DrivingWheelNumber = (int) MyRoverParameters[k++];
 
 
@@ -610,7 +610,7 @@ EXPORT int RoverInit( ROVER_PARAM *MyRover,
 
 
 	//	/* --- RoverWidth  --- */
-	//	MyRover->RoverWidth = MyRoverParameters[k++];		
+	//	MyRover->RoverWidth = MyRoverParameters[k++];
 
 
 	/* --- WheelRadius  --- */
@@ -627,7 +627,7 @@ EXPORT int RoverInit( ROVER_PARAM *MyRover,
 	case CARTESIAN:
 		//printf( "cartesian coordinates -> conversion CART-POL!\n\n" );
 		//ConvWheelCoordCart2Pol( MyRover, (MyRoverParameters+k) );
-		
+
 		// set the wheel cartesian coordinates
 		for( i=0 ; i<MyRover->WheelNumber ; i++ )
 		{
@@ -689,7 +689,7 @@ EXPORT int RoverInit( ROVER_PARAM *MyRover,
 			MyRover->WheelCoordPol[i][D] = 0.;
 			MyRover->WheelCoordPol[i][ALPHA] = 0.;
 		}
-		
+
 		printf( "ERROR in GenericRoverManoeuvre.c->RoverInit():\n" );
 		printf( "type of wheel coordinate not known!\n" );
 		printf( "type %d instead of\n", WheelCoordType );
@@ -741,7 +741,7 @@ EXPORT int RoverInit( ROVER_PARAM *MyRover,
 		case POLAR:
 			//printf( "polar coordinates -> conversion POL-CART!\n\n" );
 			//>ConvWalkCoordPol2Cart( MyRover, (MyRoverParameters+k) );
-			
+
 			// set the walk joint polar coordinates
 			for( i=0 ; i<MyRover->WheelNumber ; i++ )
 			{
@@ -890,7 +890,7 @@ EXPORT int RoverPrint( ROVER_PARAM *MyRover )
 	printf( " \n" );
 
 	/* --- WheelCoord Cart  --- */
-	printf( "\tWheelCoordCart (x;y) [m] [m] :\n\t" ); 
+	printf( "\tWheelCoordCart (x;y) [m] [m] :\n\t" );
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
 		printf( "\t(%f;%f)", MyRover->WheelCoordCart[i][X], MyRover->WheelCoordCart[i][Y] );
@@ -921,7 +921,7 @@ EXPORT int RoverPrint( ROVER_PARAM *MyRover )
 	printf( " \n" );
 
 	/* --- WalkCoord Cart  --- */
-	printf( "\tWalkCoordCart (x;y) [m] [m] :\n\t" ); 
+	printf( "\tWalkCoordCart (x;y) [m] [m] :\n\t" );
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
 		printf( "\t(%f;%f)", MyRover->WalkCoordCart[i][X], MyRover->WalkCoordCart[i][Y] );
@@ -946,7 +946,7 @@ EXPORT int RoverPrint( ROVER_PARAM *MyRover )
 	//{
 	//	printf( "\t\t%f [deg]\n", MyRover->WheelRoverCenterAngle[i]*RAD2DEG );
 	//}
-	//printf( "\tWheelRoverCenterDist :\n" ); 
+	//printf( "\tWheelRoverCenterDist :\n" );
 	//for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	//{
 	//	printf( "\t\t%f [m]\n", MyRover->WheelRoverCenterDist[i] );
@@ -967,12 +967,12 @@ EXPORT int RoverPrint( ROVER_PARAM *MyRover )
 	//		{
 	//			printf( "\t\t%f [deg]\n", MyRover->WalkingAngleMax[i]*RAD2DEG );
 	//		}
-	//	printf( "\tWalkingAngleMin :\n" ); 
+	//	printf( "\tWalkingAngleMin :\n" );
 	//		for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	//		{
 	//			printf( "\t\t%f [deg]\n", MyRover->WalkingAngleMin[i]*RAD2DEG );
 	//		}
-	//	printf( "\tSteeringAngleMax :\n" ); 
+	//	printf( "\tSteeringAngleMax :\n" );
 	//		for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	//		{
 	//			printf( "\t\t%f [deg]\n", MyRover->SteeringAngleMax[i]*RAD2DEG );
@@ -1013,12 +1013,12 @@ EXPORT int RoverReset( ROVER_PARAM *MyRover )
 	}
 
 
-	MyRover->WheelNumber = 0;				
-	//	MyRover->WalkingWheelNumber = 0;			
-	//	MyRover->SteeringWheelNumber = 0;		
-	//	MyRover->DrivingWheelNumber = 0;		
+	MyRover->WheelNumber = 0;
+	//	MyRover->WalkingWheelNumber = 0;
+	//	MyRover->SteeringWheelNumber = 0;
+	//	MyRover->DrivingWheelNumber = 0;
 
-	//	MyRover->RoverWidth = 0;		
+	//	MyRover->RoverWidth = 0;
 
 	for( i=0 ; i<NUM_WHEEL_ROVER_MAX ; i++ )
 	{
@@ -1027,7 +1027,7 @@ EXPORT int RoverReset( ROVER_PARAM *MyRover )
 		MyRover->IsWalkingWheel[i] = 0;
 		MyRover->IsDrivingWheel[i] = 0;
 
-		MyRover->WheelRadius[i] = 0.;	
+		MyRover->WheelRadius[i] = 0.;
 
 		MyRover->WheelCoordCart[i][X] = 0.;
 		MyRover->WheelCoordCart[i][Y] = 0.;
@@ -1043,13 +1043,13 @@ EXPORT int RoverReset( ROVER_PARAM *MyRover )
 		//		MyRover->WalkingAngleMin[i] = 0.;
 
 		//		MyRover->SteeringAngleMax[i] = 0.;
-		//		MyRover->SteeringAngleMin[i] = 0.;	
+		//		MyRover->SteeringAngleMin[i] = 0.;
 	}
 
-	//MyRover->SteeringAngleMax = 0;			
-	//MyRover->SteeringAngleMin = 0;			
-	//MyRover->WalkingAngleMax = 0;			
-	//MyRover->WalkingAngleMin = 0;		
+	//MyRover->SteeringAngleMax = 0;
+	//MyRover->SteeringAngleMin = 0;
+	//MyRover->WalkingAngleMax = 0;
+	//MyRover->WalkingAngleMin = 0;
 
 	return 0;
 }
@@ -1059,8 +1059,8 @@ EXPORT int RoverReset( ROVER_PARAM *MyRover )
 /* -- SkidTurn           -- */
 /* ------------------------ */
 
-EXPORT int SkidTurn( 
-	ROVER_PARAM *MyRover, 
+EXPORT int SkidTurn(
+	ROVER_PARAM *MyRover,
 	double RoverVelocity,
 	double RadiusOfCurvature,
 	int IsStraightLine,
@@ -1152,7 +1152,7 @@ EXPORT int SkidTurn(
 		// assumption : compute wheel speed as if all the wheels where on the axis rover center - center of rotation (only Y component)
 
 		// compute wheels velocity
-		for( i=0 ; i<MyRover->WheelNumber ; i++ )		
+		for( i=0 ; i<MyRover->WheelNumber ; i++ )
 		{
 			// compute the rover angular velocity
 			// RoverVelocity is the rover LINEAR velocity
@@ -1162,7 +1162,7 @@ EXPORT int SkidTurn(
 			{
 				// projection on Y axis of the distance wheel center - rover center
 				// always '-' because sign(alpha) changes between left and right wheel!
-				double ProjDistWheelRoC = RadiusOfCurvature - MyRover->WheelCoordCart[i][Y];	
+				double ProjDistWheelRoC = RadiusOfCurvature - MyRover->WheelCoordCart[i][Y];
 				// compute wheel angular velocity
 				WheelVelocity[i] = RoverAngularVelocity * ProjDistWheelRoC / MyRover->WheelRadius[i];
 			}
@@ -1209,7 +1209,7 @@ EXPORT int Stop( ROVER_PARAM *MyRover,
 	//}
 
 	// set velocity
-	for( i=0 ; i<MyRover->WheelNumber ; i++ )		
+	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
 		WheelVelocity[i] = 0.;
 		//SteeringAngles[i] = 0.;
@@ -1224,17 +1224,17 @@ EXPORT int Stop( ROVER_PARAM *MyRover,
 /* ------------------------ */
 
 //EXPORT int WheelWalk( ROVER_PARAM *MyRover,
-//	double Distance,		
-//	double LinearVelocity,	
-//	double StepLength,		
-//	int Gait,				
-//	double *WalkVelocity,	
-//	double *WheelVelocity	
-EXPORT int WheelWalk( ROVER_PARAM *MyRover,	
+//	double Distance,
+//	double LinearVelocity,
+//	double StepLength,
+//	int Gait,
+//	double *WalkVelocity,
+//	double *WheelVelocity
+EXPORT int WheelWalk( ROVER_PARAM *MyRover,
 	double *StepLength,
-	int Gait,				
-	double *WalkAngleRad,	
-	double *WheelAngleRad	
+	int Gait,
+	double *WalkAngleRad,
+	double *WheelAngleRad
 	)
 {
 
@@ -1306,7 +1306,7 @@ EXPORT int WheelWalk( ROVER_PARAM *MyRover,
 	SC = StepLength[1];
 	SR = StepLength[2];
 	B = MyRover->LegLengthV[0];
-	
+
 
 	// compute auxiliary variables
 	VC = sqrt( B*B - SF*SF );
@@ -1390,7 +1390,7 @@ EXPORT int WheelWalk( ROVER_PARAM *MyRover,
 	printf( "\tphi = %f [rad] = %f [deg]\n", phi, phi*RAD2DEG );
 	printf( "\n\n" );
 
-	// loop over all legs	
+	// loop over all legs
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
 		// check the driving wheel
@@ -1431,12 +1431,12 @@ EXPORT int WheelWalk( ROVER_PARAM *MyRover,
 /* ------------------------ */
 
 EXPORT int LowCog( ROVER_PARAM *MyRover,
-	double BodyZVelocity, 
-	double BodyHeightDispl, 
-	double *WalkVelocity, 
+	double BodyZVelocity,
+	double BodyHeightDispl,
+	double *WalkVelocity,
 	double *WheelVelocity )
-{	
-	
+{
+
 	// for loop variable
 	int i=0;
 
@@ -1462,7 +1462,7 @@ EXPORT int LowCog( ROVER_PARAM *MyRover,
 	}
 
 
-	// loop over all legs	
+	// loop over all legs
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
 		// check the driving wheel
@@ -1508,7 +1508,7 @@ EXPORT int LowCog( ROVER_PARAM *MyRover,
 
 #ifdef DEBUG
 			printf( "\twheel vel : %3.2f [rad/s]\n", WheelVel );
-			
+
 #endif
 		}
 		else
@@ -1520,7 +1520,7 @@ EXPORT int LowCog( ROVER_PARAM *MyRover,
 #ifdef DEBUG
 			printf( "\twheel vel : %3.2f [rad/s]\n", 0. );
 #endif
-		} 
+		}
 	}
 
 

@@ -11,9 +11,9 @@
 #endif
 
 // define the export mode (C or C++)
-#ifdef WIN32	
+#ifdef WIN32
 	#ifdef __cplusplus
-		#define EXPORT extern "C" __declspec(dllexport)		//!< Define the external function (WIN32 and C++) 
+		#define EXPORT extern "C" __declspec(dllexport)		//!< Define the external function (WIN32 and C++)
 	#else
 		#define EXPORT __declspec(dllexport)				//!< Define the external function (WIN32 and C)
 	#endif
@@ -22,7 +22,7 @@
 		#define EXPORT extern "C"							//!< Define the external function (LINUX and C++)
 	#else
         	#define EXPORT									//!< Define the external function (LINUX and C)
-        #endif	
+        #endif
 #endif
 
 
@@ -31,28 +31,28 @@
 EXPORT typedef struct rover_param
 {
 	//! number of wheels of the rover
-	int WheelNumber;			
+	int WheelNumber;
 
 	//! position of walking wheels (1 -> walk, 0 -> no walk)
-	int IsWalkingWheel[NUM_WHEEL_ROVER_MAX];				
+	int IsWalkingWheel[NUM_WHEEL_ROVER_MAX];
 	//! position of steering wheels (1 -> steer, 0 -> no steer)
-	int IsSteeringWheel[NUM_WHEEL_ROVER_MAX];				
+	int IsSteeringWheel[NUM_WHEEL_ROVER_MAX];
 	//! position of drivig wheels (1 -> drive, 0 -> no drive)
-	int IsDrivingWheel[NUM_WHEEL_ROVER_MAX];				
+	int IsDrivingWheel[NUM_WHEEL_ROVER_MAX];
 
 	//! radius of each wheel of the rover, in [m]
-	double WheelRadius[NUM_WHEEL_ROVER_MAX];				
+	double WheelRadius[NUM_WHEEL_ROVER_MAX];
 	//! wheel cartesian coordinates in 2D, in [m] (X [0] and Y [1])  in the rover frame
-	double WheelCoordCart[NUM_WHEEL_ROVER_MAX][2];			
+	double WheelCoordCart[NUM_WHEEL_ROVER_MAX][2];
 	//! wheel polar coordinates, in [m] and [rad] (D [0] and ALPHA [1]) in the rover frame
-	double WheelCoordPol[NUM_WHEEL_ROVER_MAX][2];			
+	double WheelCoordPol[NUM_WHEEL_ROVER_MAX][2];
 	//! difference of height (Z axis) in [m] between wheel centre and walking joint centre
-	double LegLengthV[NUM_WHEEL_ROVER_MAX];					
+	double LegLengthV[NUM_WHEEL_ROVER_MAX];
 	//! cartesian coordinates of the walking joints, in [m] (X [0] and Y [1])  in the rover frame
-	double WalkCoordCart[NUM_WHEEL_ROVER_MAX][2];			
+	double WalkCoordCart[NUM_WHEEL_ROVER_MAX][2];
 	//! polar coordinates of the walking joints, in [m] and [rad] (D [0] and ALPHA [1]) in the rover frame
-	double WalkCoordPol[NUM_WHEEL_ROVER_MAX][2];			
-	
+	double WalkCoordPol[NUM_WHEEL_ROVER_MAX][2];
+
 } ROVER_PARAM;
 #endif
 
@@ -68,7 +68,7 @@ EXPORT typedef struct rover_param
 		The input is the linear velocity, the coordinates of the center of rotation, and the point to control.
 		The coordinates are expressed in the Cartesian rover frame. The point to control is a point that will describe
 		a circle around the center of rotation. If the point to control is (0;0), the geometric center of the rover will
-		turn around the center of rotation. This feature is useful to control the trajectory of a particular sensor. 
+		turn around the center of rotation. This feature is useful to control the trajectory of a particular sensor.
 		The velocity is the linear velocity of the point to control, but if the center of rotation is the point to control,
 		it is the angular velocity of the rover, in [rad/s].
 
@@ -84,7 +84,7 @@ EXPORT typedef struct rover_param
 
 //! Function to compute the wheel steering and the wheel velocity of the rover for a generic ackermann steering.
 EXPORT int GenericAckermann( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all the parameters of the rover.
-	double RoverVelocity,							/*!< 
+	double RoverVelocity,							/*!<
 														 Rover generic velocity of the ackermann manoeuvre. <BR>
 													     Can be a angular velocity in [rad/s] in case of a spot turn,
 														 or a linear velocity in [m/s] in case of a generic turn
@@ -102,7 +102,7 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure co
 /*!
 	DEF.	:
 
-		The GenericCrab function computes the steering angle and the rotation speed for each wheel of the rover. 
+		The GenericCrab function computes the steering angle and the rotation speed for each wheel of the rover.
 		Input contains of a linear velocity vector containing a heading angle and a speed, as well as a angular velocity of the rover.
 		All coordinates are expressed in the rover frame.
 
@@ -118,60 +118,60 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure co
 		- WheelVelocity			in [rad/s]
 
 */
-//                                                                                                                                                              
-//                     ,/(/,                                                                                                                                     
-//                    **/*****////.                                                                                                                              
-//                   **/   .****/***/(*                                                                                                                          
-//                   */        ,****,,,,/(,                //////////////////((/*.                                                                               
-//                  ,*            .****,,,*/.             ///////////////////////////                                                                            
-//                .///////////**,...... .****/.          //////(//(((((/((////////////                                                                           
-//             ./(((////////(/**,,,,,**,..***,,(.       .//////**/////////*///////((.      ///////////                                                           
-//            ((((        ./(((((((((//,*(,./***///////////////////////////////////,...    */////////////*                                                       
-//      (/******//((**,               (((**////////////////////////////////////////////,     ***/////////////*                                                   
-//    (((#####((((//,,,,,*/((,,    .((/////////////////////////*//*/**//*//////////////////.    /***//////////(.                                                 
-//  ,(##   ,    ,/(((#((((((/**/(#((((/////////////////////////////****//////////////////////(.     **//////////(*                                               
-// ,(#        ...............(##(/(////////////////////////////////////////////////////////////(      /**////////(((                                             
-// (,                       ....////////////////////////////////////////////////////////////////(  *//*/(///////((//                                             
-//      .............          **////////////////////////////////////////////////////////////////(##(((/(/(((/((//*.                                             
-//               ............../(//////////////////////////////////////////////////////////////(//###(/(////////*...                                             
-//                            ..//(///////////////////////////((/(((((((((((((((((((((((((/////////(..............                                               
-//                   .,///////***//**//((((////////////////(((((((((((((((((((((((((((((((((((((((//((*.....     .*//*//*,**,**///*.                             
-//                   ********,,,,,*//###@&(((((((((((((((((((((((((((((((((((((((((((((((((((((((((///((   /(****//(//(/////*********//(((*.                     
-//              ,/(((#%%#%###(/*,,,/#%@@#@&(*/(/////(((((((((((((((((((((((((((((((((((((((((((((((((////*###(//***//(#/ . .(#((/((/////////(((((*.              
-//           *(////(((%%%##%#######%#@@@@@((##/*,(****/(((((((((((((((((((((((((((((((((((((((((((((///(///(//((((((/*,,///.....,(/#####((((((((((#(#/           
-//           //***//(##%####%%###%&.##%####%%%/(#/(##(,,*/**//(((((((((((((((((((((((((((((((((((((/(#(/(#(//%#####//(((//**//*...,,,...      .*(#*###(#         
-//           %//*,,/(#%...........,...#%%%%%/#%%%%###/((##(*((*///*((((((((((((((((((((///(((((((((/(/##/(#%%%%%/      .##(#*/**/(*.........         ###(*       
-//           ./*/*,***/.,........,....*(#*..,*(####%#%##%%(((/(((((/(((((((/(/*/(((((/(((((((((((((#((/#%%%%*  .....        ,#((((///(.....,...       .###(      
-//            /*///,*/***,...........,,,,,.,,...###((,/#######%%%%(((((@%@%@/((*//((////((/(/((/((/#(((##%%####((((((*,*/*      ,##((((((, ....,...     .##(     
-//            */////**///.,,..... ................######(*,*(####(##((#@(@(@##(**(((/*////(/(###((%####%%%%%%####(##((#(*,*/(*      .(###/*    .......    ##(    
-//             /*/**/***/,,.,..                      (%############/###&@@@#############(((((((..,....%%%%%%%%#/,.....,###(((/*//.      *##/       ......  /#/   
-//              .*****/**/,,,,,...                       /#########(##%%%#############(##(((/(*...,.,,..................,###((((*//     ###(              .#   
-//                ,*//////.,,......                              .,,..  *(&&&%%%###((###(#((///(#(((/.....                .....*##((((((.   ###.                 
-//                   (///*,,,..                                 ,///*************,//(/////,,***/*/((((//........               ...../#(((/   .##/                
-//                     ,(**,,..                              **/(((((((((//////*,.*,,,,,,***,,,**/**/((##,,,,,,,........           ....,(((/   ##/               
-//                         ......                                       ,#%####/,//(((((((((((#*/((((((##(...........,,,.....           ..(((*. (#/              
-//                                                                        **//*,/(((((((((((((##(((((((##/            ...........          *(//...#/             
-//                                                           ,***///(*#(#(/*,,#(((#####(((((((((#(((((#..                    ........        (//   .             
-//                                                            (#(((((/////((*##################%%#((*...                           .....      ,/*                
-//                                                               ,#%#########################(,(#,...                                   ...    ./.               
-//                                                                .........*(%/,,,,.......,.,.....                                               .               
-//                                                                   ....,,,,,,,,,,,,,,,.,,,..                                                                   
-//                                                            ..........,,,,,,,,,,,,,,,,,,..                                                                     
-//                                                               ......,....,,.,,,.,.....                                                                        
-//                                                                           ...                              
 //
-//														"SCHNIP! SCHNAP! I'm a crab." - Generic Crab, 2019                                                  
-//						                                                  
-//						                                                  
+//                     ,/(/,
+//                    **/*****////.
+//                   **/   .****/***/(*
+//                   */        ,****,,,,/(,                //////////////////((/*.
+//                  ,*            .****,,,*/.             ///////////////////////////
+//                .///////////**,...... .****/.          //////(//(((((/((////////////
+//             ./(((////////(/**,,,,,**,..***,,(.       .//////**/////////*///////((.      ///////////
+//            ((((        ./(((((((((//,*(,./***///////////////////////////////////,...    */////////////*
+//      (/******//((**,               (((**////////////////////////////////////////////,     ***/////////////*
+//    (((#####((((//,,,,,*/((,,    .((/////////////////////////*//*/**//*//////////////////.    /***//////////(.
+//  ,(##   ,    ,/(((#((((((/**/(#((((/////////////////////////////****//////////////////////(.     **//////////(*
+// ,(#        ...............(##(/(////////////////////////////////////////////////////////////(      /**////////(((
+// (,                       ....////////////////////////////////////////////////////////////////(  *//*/(///////((//
+//      .............          **////////////////////////////////////////////////////////////////(##(((/(/(((/((//*.
+//               ............../(//////////////////////////////////////////////////////////////(//###(/(////////*...
+//                            ..//(///////////////////////////((/(((((((((((((((((((((((((/////////(..............
+//                   .,///////***//**//((((////////////////(((((((((((((((((((((((((((((((((((((((//((*.....     .*//*//*,**,**///*.
+//                   ********,,,,,*//###@&(((((((((((((((((((((((((((((((((((((((((((((((((((((((((///((   /(****//(//(/////*********//(((*.
+//              ,/(((#%%#%###(/*,,,/#%@@#@&(*/(/////(((((((((((((((((((((((((((((((((((((((((((((((((////*###(//***//(#/ . .(#((/((/////////(((((*.
+//           *(////(((%%%##%#######%#@@@@@((##/*,(****/(((((((((((((((((((((((((((((((((((((((((((((///(///(//((((((/*,,///.....,(/#####((((((((((#(#/
+//           //***//(##%####%%###%&.##%####%%%/(#/(##(,,*/**//(((((((((((((((((((((((((((((((((((((/(#(/(#(//%#####//(((//**//*...,,,...      .*(#*###(#
+//           %//*,,/(#%...........,...#%%%%%/#%%%%###/((##(*((*///*((((((((((((((((((((///(((((((((/(/##/(#%%%%%/      .##(#*/**/(*.........         ###(*
+//           ./*/*,***/.,........,....*(#*..,*(####%#%##%%(((/(((((/(((((((/(/*/(((((/(((((((((((((#((/#%%%%*  .....        ,#((((///(.....,...       .###(
+//            /*///,*/***,...........,,,,,.,,...###((,/#######%%%%(((((@%@%@/((*//((////((/(/((/((/#(((##%%####((((((*,*/*      ,##((((((, ....,...     .##(
+//            */////**///.,,..... ................######(*,*(####(##((#@(@(@##(**(((/*////(/(###((%####%%%%%%####(##((#(*,*/(*      .(###/*    .......    ##(
+//             /*/**/***/,,.,..                      (%############/###&@@@#############(((((((..,....%%%%%%%%#/,.....,###(((/*//.      *##/       ......  /#/
+//              .*****/**/,,,,,...                       /#########(##%%%#############(##(((/(*...,.,,..................,###((((*//     ###(              .#
+//                ,*//////.,,......                              .,,..  *(&&&%%%###((###(#((///(#(((/.....                .....*##((((((.   ###.
+//                   (///*,,,..                                 ,///*************,//(/////,,***/*/((((//........               ...../#(((/   .##/
+//                     ,(**,,..                              **/(((((((((//////*,.*,,,,,,***,,,**/**/((##,,,,,,,........           ....,(((/   ##/
+//                         ......                                       ,#%####/,//(((((((((((#*/((((((##(...........,,,.....           ..(((*. (#/
+//                                                                        **//*,/(((((((((((((##(((((((##/            ...........          *(//...#/
+//                                                           ,***///(*#(#(/*,,#(((#####(((((((((#(((((#..                    ........        (//   .
+//                                                            (#(((((/////((*##################%%#((*...                           .....      ,/*
+//                                                               ,#%#########################(,(#,...                                   ...    ./.
+//                                                                .........*(%/,,,,.......,.,.....                                               .
+//                                                                   ....,,,,,,,,,,,,,,,.,,,..
+//                                                            ..........,,,,,,,,,,,,,,,,,,..
+//                                                               ......,....,,.,,,.,.....
+//                                                                           ...
+//
+//														"SCHNIP! SCHNAP! I'm a crab." - Generic Crab, 2019
+//
+//
 //! Function to compute the wheel steering and the wheel velocity of the rover for a generic ackermann steering.
 EXPORT int GenericCrab( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure containing all the parameters of the rover.
-	double RoverLinearVelocity,						/*!< 
+	double RoverLinearVelocity,						/*!<
 														 Rover generic velocity of the ackermann manoeuvre. <BR>
 													     Can be a angular velocity in [rad/s] in case of a spot turn,
 														 or a linear velocity in [m/s] in case of a generic turn
 													*/
 	double HeadingAngle,							//!< The heading angle of the motion, with respect to rover frame, in [rad]
-	double RoverAngularVelocity,					//!< Rover angular velocity for the manoeuvre, in [rad/s]	
+	double RoverAngularVelocity,					//!< Rover angular velocity for the manoeuvre, in [rad/s]
 	double *steeringPositionReadings,				//!< Position readings of steering joints in [rad]
 	// double *RoverPointToControl,					//!< Coordinates of the point to control of the rover, in the rover frame.
 	double *WheelSteering,							//!< Angle of the steering wheels, in [rad].
@@ -185,8 +185,8 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure contai
 /*!
 	DEF.	:
 
-		The Crab function computes the steering angle and the rotation speed for each wheel of the rover. 
-		The steering is the same for each wheel (comes directly from the input HeadingAngle), 
+		The Crab function computes the steering angle and the rotation speed for each wheel of the rover.
+		The steering is the same for each wheel (comes directly from the input HeadingAngle),
 		and the rotation speed depends only on the wheel radius.
 
 		The function returns -1 if one of the input pointers is NULL, and 0 otherwise.
@@ -205,7 +205,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure contai
 EXPORT int Crab( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all the parameters of the rover.
 	double RoverLinearVelocity,			//!< The linear velocity of the rover, in [m/s]
 	double HeadingAngle,				//!< The heading angle of the motion, with respect to rover frame, in [rad]
-	double *WheelSteering,				//!< Angle of the steering wheels, in [rad].			
+	double *WheelSteering,				//!< Angle of the steering wheels, in [rad].
 	double *WheelVelocity 				//!< Rotation velocity of the wheels, in [rad/s].
 	);
 
@@ -214,7 +214,7 @@ EXPORT int Crab( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all
 /* -- Low Cog            -- */
 /* ------------------------ */
 /*!	DEF.	:
-		
+
 		Compute the walking joint velocity and the wheel velocity when the rover lower its centre of gravity.
 		During this manoeuvre, a wheel velocity is applied in order to keep the same contact point between the
 		wheel and the ground.
@@ -231,7 +231,7 @@ EXPORT int Crab( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all
 //! Function to compute the walking joint velocity and the wheel velocity when the rover lower its centre of gravity.
 EXPORT int LowCog( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all the parameters of the rover.
 	double BodyZVelocity,					//!< Rover vertical velocity for the motion, in [m/s].
-	double BodyHeightDispl,					//!< Vertical total shift of the rover with respect to the position 
+	double BodyHeightDispl,					//!< Vertical total shift of the rover with respect to the position
 											//!< at the beginning of the manoeuvre, in [m].
 	double *WalkVelocity,					//!< Rotation velocity of the wheel walking joints, in [rad/s].
 	double *WheelVelocity					//!< Rotation velocity of the wheels, in [rad/s].
@@ -245,19 +245,19 @@ EXPORT int LowCog( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing a
 /* ------------------------ */
 /*!
 	DEF.	:
-		
-		The SkidTurn function computes the angular velocity of the wheel. In this implementation, only the distance 
-		along the y axis from the wheel to the center of the osculating circle is taken into account. I.e. if all 
-		the wheels from one side of the rover are aligned, one supposes that the wheels act as a tracked rover. The center 
+
+		The SkidTurn function computes the angular velocity of the wheel. In this implementation, only the distance
+		along the y axis from the wheel to the center of the osculating circle is taken into account. I.e. if all
+		the wheels from one side of the rover are aligned, one supposes that the wheels act as a tracked rover. The center
 		of the circle is on the y axis.
-		For positive linear velocities and positive radius of curvature, the rover turns left. 
+		For positive linear velocities and positive radius of curvature, the rover turns left.
 		For positive linear velocities and negative radius of curvature, the rover turns right.
 		There are 3 different types of manoeuvre:
 			- Straight line motion <br>
 			  In this case, the input IsStraightLine is TRUE, and the parameter RadiusOfCurvature is ignored.
 			- Spot turn motion <br>
 			  When RadiusOfCurvature is 0. The rover turns on spot and the RoverVelocity represents the angular
-			  rover velocity in [rad/s]. If RoverVelocity is positive, the rover turns left, and the rover turns 
+			  rover velocity in [rad/s]. If RoverVelocity is positive, the rover turns left, and the rover turns
 			  right otherwise.
 			- Skid turn motion
 			  When RadiusOfCurvature is not equal to 0. The rover performs a generic skid turn.
@@ -275,10 +275,10 @@ EXPORT int LowCog( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing a
 
 //! Function to compute the wheel velocity for a skid turn (i.e. no steering of the wheels, only differential speed).
 EXPORT int SkidTurn( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all the parameters of the rover.
-	double RoverVelocity,					/*!< 
+	double RoverVelocity,					/*!<
 												 Rover generic velocity of the skid turn manoeuvre. <BR>
 											     Can be a angular velocity in [rad/s] in case of a spot turn
-												 (i.e. RadiusOfCurvature = 0 ), or a linear velocity in [m/s] 
+												 (i.e. RadiusOfCurvature = 0 ), or a linear velocity in [m/s]
 												 in case of a generic turn
 											*/
 	double RadiusOfCurvature,				//!< Radius of curvature of the manoeuvre
@@ -292,7 +292,7 @@ EXPORT int SkidTurn( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing
 /* ------------------------ */
 /*!
 	DEF.	:
-		
+
 		The SpotTurn function computes the steering angle and angular velocity of each wheel of the rover.
 		It takes into account which wheel is able to steer and to drive. <br>
 		The function returns -1 if one of the input pointers is NULL, and 0 otherwise.
@@ -341,7 +341,7 @@ EXPORT int Stop( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure containing al
 	DEF.	:
 
 		NOT IMPLEMENTED!
-		
+
 		Compute the wheel velocity and walking joint velocity with respect to the linear velocity of the manoeuvre.
 
 
@@ -371,11 +371,11 @@ EXPORT int Stop( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure containing al
 //	double *WalkVelocity,						//!< Angle of the steering wheels, in [rad/s].
 //	double *WheelVelocity						//!< Rotation velocity of the wheels, in [rad/s].
 //	);
-EXPORT int WheelWalk( ROVER_PARAM *MyRover,	
-	double *StepLength,		
-	int Gait,				
-	double *WalkAngleRad,	
-	double *WheelAngleRad	
+EXPORT int WheelWalk( ROVER_PARAM *MyRover,
+	double *StepLength,
+	int Gait,
+	double *WalkAngleRad,
+	double *WheelAngleRad
 	);
 
 
@@ -385,9 +385,9 @@ EXPORT int WheelWalk( ROVER_PARAM *MyRover,
 /* ------------------------ */
 /*!
 	DEF.	:
-		
+
 		This function converts the set of cartesian coordinates given as input into polar coordinates.
-		The format of the input and output is a table of 2 elements (X,Y coordinates or 
+		The format of the input and output is a table of 2 elements (X,Y coordinates or
 		RHO, THETA coordinates).
 
 	INPUT	:
@@ -400,7 +400,7 @@ EXPORT int WheelWalk( ROVER_PARAM *MyRover,
 */
 
 //! Function to convert a set of cartesian coordinates into polar coordinates.
-EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],	
+EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],
 	double CoordPol[][2],
 	int NumCoord
 	);
@@ -411,9 +411,9 @@ EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],
 /* ------------------------ */
 /*!
 	DEF.	:
-		
+
 		This function converts the set of polar coordinates given as input into cartesian coordinates.
-		The format of the input and output is a table of 2 elements (X,Y coordinates or 
+		The format of the input and output is a table of 2 elements (X,Y coordinates or
 		RHO, THETA coordinates).
 
 	INPUT	:
@@ -426,7 +426,7 @@ EXPORT void ConvCoordCart2Pol( const double CoordCart[][2],
 */
 
 //! Function to convert a set of polar coordinates into cartesian coordinates
-EXPORT void ConvCoordPol2Cart( const double CoordPol[][2],	
+EXPORT void ConvCoordPol2Cart( const double CoordPol[][2],
 	double CoordCart[][2],
 	int NumCoord
 	);
@@ -465,7 +465,7 @@ EXPORT void ConvCoordPol2Cart( const double CoordPol[][2],
 				-	[42],[43]	:			CL
 				-	[44],[45]	:			CR
 				-	[46],[47]	:			RL
-				-	[48],[49]	:			RR				
+				-	[48],[49]	:			RR
 				-	[38]...[43]	| B [50]...[55] :			length of the legs in [m]
 				-	[44]		| B [56]		:			indicate type of coordinates given for walk position
 															(POLAR, CARTESIAN, BOTH)
@@ -540,7 +540,7 @@ EXPORT int RoverReset( ROVER_PARAM *RoverConstants );	//!< ROVER_PARAM structure
 /* ------------------------ */
 /*!
 	DEF.	:
-		
+
 		Computes the distance between two points
 
 	INPUTS	:
