@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 
+
 // define the variable of the file
 #ifndef GENERIC_ROVER_MANOEUVRE_H
 #define GENERIC_ROVER_MANOEUVRE_H
@@ -22,7 +23,7 @@
 		#define EXPORT extern "C"							//!< Define the external function (LINUX and C++)
 	#else
         	#define EXPORT									//!< Define the external function (LINUX and C)
-        #endif
+  #endif
 #endif
 
 

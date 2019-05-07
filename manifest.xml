@@ -8,12 +8,5 @@
   <license>GPL v2 or later </license>
   <url>http://rock-robotics.org</url>
   <url>http://www.esa.int/TEC/Robotics</url>
-  <!--
-   To add any dependencies use the depend tag
-  <depend package="dummy-dependency-0" />
-	...
-  <depend package="dummy-dependency-n-1" />
-  <depend package="dummy-dependency-n" />
-  -->
   <depend package="base/types" />
 </package>

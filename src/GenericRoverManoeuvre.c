@@ -205,13 +205,13 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
 	{
 
-		double alpha;			// Angle of wheel steering center to origin
-		double l;				// Radial Distance from Wheel Steering center to Origin
-		double beta_offset;		// Static offset to calculate steering angle from computed angle
-		double beta;			// Computed angle derived from 2D kinematic model
-		double beta_steer;		// Steering Angle to send to platform driver
-		double r;				// Wheel Radius
-		double phi_dot;			// Wheel velocity
+		double alpha;					// [rad] Angle of wheel steering center to origin
+		double l;				  		// [m] Radial Distance from Wheel Steering center to Origin
+		double beta_offset;		// [rad] Static offset to calculate steering angle from computed angle
+		double beta;					// [rad] Computed angle derived from 2D kinematic model
+		double beta_steer;		// [rad] Steering Angle to send to platform driver
+		double r;							// [m] Wheel Radius
+		double phi_dot;			  // [rad/s] Wheel velocity
 		bool flip_velocity = false;
 
 		int adjustment_count = 0;
@@ -227,6 +227,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 
 			// Compute steering angle from no sliding constraint.
 			beta = atan2(- (sin(alpha) * y_dot + cos(alpha) * x_dot), (l * theta_dot + cos(alpha) * y_dot - sin(alpha) * x_dot));
+
 			// Shift steering angle to correct orientation depending on the wheel.
 			beta_steer = beta - beta_offset;
 			// printf("beta_steer        : %f\n",beta_steer*180/M_PI);
@@ -281,14 +282,14 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 
 			// printf("beta_steer        : %f\n",beta_steer*180/M_PI);
 
-			WheelSteering[i] = beta_steer;
+			WheelSteering[i] = beta_steer; // [rad]
 			// TODO: Compute the wheel speeds from the current wheel orientations and not the set wheel orientations.
 
 			phi_dot = (sin(alpha + beta) * x_dot - cos(alpha + beta) * y_dot - l * cos(beta) * theta_dot)/r;
 
 			if (flip_velocity) phi_dot = -phi_dot;
 
-			WheelVelocity[i] = phi_dot;
+			WheelVelocity[i] = phi_dot;	// [rad/s]
 			// printf("phi_dot: %f\n",phi_dot);
 		}
 		else
