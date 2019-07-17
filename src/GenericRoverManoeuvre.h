@@ -166,6 +166,7 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure co
 //
 //! Function to compute the wheel steering and the wheel velocity of the rover for a generic ackermann steering.
 EXPORT int GenericCrab( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure containing all the parameters of the rover.
+	double steeringPositionLimit,					//!< Steering position limit in [rad]. Must be positive. Limit applies symetrically.
 	double RoverLinearVelocity,						/*!<
 														 Rover generic velocity of the ackermann manoeuvre. <BR>
 													     Can be a angular velocity in [rad/s] in case of a spot turn,

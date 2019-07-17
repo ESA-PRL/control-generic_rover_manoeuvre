@@ -156,6 +156,7 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 /* ------------------------ */
 
 EXPORT int GenericCrab( ROVER_PARAM *MyRover,
+	double steeringPositionLimit,
 	double RoverLinearVelocity,
 	double HeadingAngle,
 	double RoverAngularVelocity,
@@ -198,8 +199,10 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	double y_dot = sin(theta) * RoverLinearVelocity;
 	double theta_dot = RoverAngularVelocity;
 
-	double lower_position_limit = -1.74;		// -100 deg
-	double upper_position_limit = 1.74;			// +100 deg
+	double lower_position_limit = -steeringPositionLimit;		// -100 deg
+	double upper_position_limit = steeringPositionLimit;		// +100 deg
+
+
 
 	// set the wheel steering
 	for( i=0 ; i<MyRover->WheelNumber ; i++ )
@@ -217,7 +220,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 		int adjustment_count = 0;
 
 		double beta_current = steeringPositionReadings[i]; 	// Current steering Angle
-		// check the steering wheels
+		// check that each wheel is a driving and steering wheels
 		if( MyRover->IsSteeringWheel[i] == TRUE && MyRover->IsDrivingWheel[i] == TRUE)
 		{
 			alpha = MyRover->WheelCoordPol[i][ALPHA];
