@@ -97,13 +97,13 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure co
 	);
 
 
-/* ------------------------ */
-/* -- GenericCrab               -- */
-/* ------------------------ */
+/* ------------------------- */
+/* -- InverseKinematics2D -- */
+/* ------------------------- */
 /*!
 	DEF.	:
 
-		The GenericCrab function computes the steering angle and the rotation speed for each wheel of the rover.
+		The InverseKinematics2D function computes the steering angle and the rotation speed for each wheel of the rover.
 		Input contains of a linear velocity vector containing a heading angle and a speed, as well as a angular velocity of the rover.
 		All coordinates are expressed in the rover frame.
 
@@ -164,20 +164,20 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure co
 //														"SCHNIP! SCHNAP! I'm a crab." - Generic Crab, 2019
 //
 //
-//! Function to compute the wheel steering and the wheel velocity of the rover for a generic ackermann steering.
-EXPORT int GenericCrab( ROVER_PARAM *MyRover,		//!< ROVER_PARAM structure containing all the parameters of the rover.
-	double steeringPositionLimit,					//!< Steering position limit in [rad]. Must be positive. Limit applies symetrically.
-	double RoverLinearVelocity,						/*!<
-														 Rover generic velocity of the ackermann manoeuvre. <BR>
-													     Can be a angular velocity in [rad/s] in case of a spot turn,
-														 or a linear velocity in [m/s] in case of a generic turn
-													*/
-	double HeadingAngle,							//!< The heading angle of the motion, with respect to rover frame, in [rad]
-	double RoverAngularVelocity,					//!< Rover angular velocity for the manoeuvre, in [rad/s]
-	double *steeringPositionReadings,				//!< Position readings of steering joints in [rad]
-	// double *RoverPointToControl,					//!< Coordinates of the point to control of the rover, in the rover frame.
-	double *WheelSteering,							//!< Angle of the steering wheels, in [rad].
-	double *WheelVelocity							//!< Rotation velocity of the wheels, in [rad/s].
+//! Function to compute the wheel steering and the wheel velocity of the rover for a rover with all steerable wheels using its inverse kinemaics.
+EXPORT int InverseKinematics2D( ROVER_PARAM *MyRover,	//!< ROVER_PARAM structure containing all the parameters of the rover.
+	double steeringPositionLimit,						//!< Steering position limit in [rad]. Must be positive. Limit applies symetrically.
+	double RoverLinearVelocity,							/*!<
+															 Rover generic velocity of the ackermann manoeuvre. <BR>
+														     Can be a angular velocity in [rad/s] in case of a spot turn,
+															 or a linear velocity in [m/s] in case of a generic turn
+														*/
+	double HeadingAngle,								//!< The heading angle of the motion, with respect to rover frame, in [rad]
+	double RoverAngularVelocity,						//!< Rover angular velocity for the manoeuvre, in [rad/s]
+	double *steeringPositionReadings,					//!< Position readings of steering joints in [rad]
+	// double *RoverPointToControl,						//!< Coordinates of the point to control of the rover, in the rover frame.
+	double *WheelSteering,								//!< Angle of the steering wheels, in [rad].
+	double *WheelVelocity								//!< Rotation velocity of the wheels, in [rad/s].
 	);
 
 

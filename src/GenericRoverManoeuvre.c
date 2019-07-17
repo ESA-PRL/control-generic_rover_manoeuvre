@@ -151,11 +151,11 @@ EXPORT int GenericAckermann( ROVER_PARAM *MyRover,
 
 
 
-/* ------------------------ */
-/* -- Generic Crab -------- */
-/* ------------------------ */
+/* ------------------------- */
+/* -- InverseKinematics2D -- */
+/* ------------------------- */
 
-EXPORT int GenericCrab( ROVER_PARAM *MyRover,
+EXPORT int InverseKinematics2D( ROVER_PARAM *MyRover,
 	double steeringPositionLimit,
 	double RoverLinearVelocity,
 	double HeadingAngle,
@@ -170,24 +170,24 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 	int i=0;		// 'for' loops variable
 
 	#ifdef DEBUG
-		printf( "\nin GenericRoverManoeuvre.c->GenericCrab()\n" );
+		printf( "\nin GenericRoverManoeuvre.c->InverseKinematics2D()\n" );
 	#endif
 
 	// check the input Rover pointer is valid
 	if( MyRover == NULL )
 	{
-		printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : MyRover is NULL\n\n" );
+		printf( "\tERROR in GenericRoverManeuver.c->InverseKinematics2D() : MyRover is NULL\n\n" );
 		return -1;
 	}
 	// check the ouput pointers
 	else if( WheelSteering == NULL )
 	{
-		printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : WheelSteering is NULL\n\n" );
+		printf( "\tERROR in GenericRoverManeuver.c->InverseKinematics2D() : WheelSteering is NULL\n\n" );
 		return -1;
 	}
 	else if( WheelVelocity == NULL )
 	{
-		printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : WheelVelocity is NULL\n\n" );
+		printf( "\tERROR in GenericRoverManeuver.c->InverseKinematics2D() : WheelVelocity is NULL\n\n" );
 		return -1;
 	}
 
@@ -299,7 +299,7 @@ EXPORT int GenericCrab( ROVER_PARAM *MyRover,
 		{
 			WheelSteering[i] = 0;
 			WheelVelocity[i] = 0;
-			printf( "\tERROR in GenericRoverManeuver.c->GenericCrab() : GenericCrab only works if all wheels are steered and driven. \n\n" );
+			printf( "\tERROR in GenericRoverManeuver.c->InverseKinematics2D() : InverseKinematics2D only works if all wheels are steered and driven. \n\n" );
 			return -1;
 		}
 
